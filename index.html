@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSphere - 3D Virtual Classrooms</title>
+    <style>
+        :root {
+            --primary-blue: #3B82F6;
+            --primary-hover: #2563EB;
+            --text-dark: #111827;
+            --text-gray: #6B7280;
+            --bg-light: #F3F8FF;
+            --white: #FFFFFF;
+            --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: linear-gradient(135deg, #F0F7FF 0%, #FFFFFF 100%);
+            color: var(--text-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 0;
+        }
+
+        /* UPDATED LOGO STYLES */
+        .logo-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .logo-link:hover {
+            opacity: 0.8;
+        }
+
+        .logo-img {
+            height: 50px; /* Adjust size as needed */
+            width: auto;
+            border-radius: 50%; /* Makes the coin round if image is square, or keeps it nice */
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: #2563EB;
+            letter-spacing: -0.5px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-gray);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--primary-blue);
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border-radius: 9999px; /* Pill shape */
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: var(--white);
+            color: var(--text-dark);
+            border: 1px solid #E5E7EB;
+            margin-left: 12px;
+        }
+
+        .btn-secondary:hover {
+            background-color: #F9FAFB;
+            border-color: #D1D5DB;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            padding: 60px 0 100px;
+            position: relative;
+        }
+
+        /* Hero Left */
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: #FEF3C7; /* Light yellow/orange */
+            color: #D97706;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            line-height: 1.1;
+            font-weight: 800;
+            margin-bottom: 24px;
+            color: #111827;
+        }
+
+        .highlight-blue {
+            color: var(--primary-blue);
+        }
+
+        .hero-desc {
+            font-size: 1.125rem;
+            line-height: 1.6;
+            color: var(--text-gray);
+            margin-bottom: 32px;
+            max-width: 90%;
+        }
+
+        .cta-group {
+            margin-bottom: 48px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 40px;
+        }
+
+        .stat-item h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .stat-item p {
+            font-size: 0.875rem;
+            color: var(--text-gray);
+        }
+
+        /* Hero Right (Visual) */
+        .hero-visual {
+            position: relative;
+        }
+
+        .app-window {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            padding: 16px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .window-header {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .pill-label {
+            background: #EFF6FF;
+            color: var(--primary-blue);
+            padding: 6px 16px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .classroom-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #E0E7FF;
+        }
+
+        /* Simulate avatars */
+        .avatar-box {
+            background-size: cover;
+            background-position: center;
+            aspect-ratio: 1; 
+            background-color: #ddd;
+            position: relative;
+        }
+        
+        .avatar-box:nth-child(1) { background-image: url('https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=200&q=80'); }
+        .avatar-box:nth-child(2) { background-image: url('https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80'); }
+        .avatar-box:nth-child(3) { background-image: url('https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&q=80'); }
+        .avatar-box:nth-child(4) { background-image: url('https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=200&q=80'); }
+        .avatar-box:nth-child(5) { background-image: url('https://images.unsplash.com/photo-1633332755192-727a05c4013d?auto=format&fit=crop&w=200&q=80'); }
+        .avatar-box:nth-child(6) { background-image: url('https://images.unsplash.com/photo-1628157588553-5eeea00af15c?auto=format&fit=crop&w=200&q=80'); }
+
+        /* Floating elements */
+        .float-badge {
+            position: absolute;
+            background: white;
+            padding: 8px 12px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            z-index: 3;
+        }
+
+        .points-badge {
+            top: 40px;
+            right: -20px;
+            color: #D97706;
+        }
+
+        .rank-badge {
+            bottom: 30px;
+            left: -20px;
+            color: #111827;
+        }
+        
+        .rank-badge span {
+            color: #D97706; /* Trophy color */
+        }
+
+        .active-users {
+            position: absolute;
+            bottom: -15px;
+            right: 40px;
+            display: flex;
+            background: white;
+            padding: 6px;
+            border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            z-index: 3;
+        }
+
+        .user-dot {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid white;
+            background-color: #ddd;
+            margin-left: -10px;
+            background-size: cover;
+        }
+        .user-dot:first-child { margin-left: 0; }
+        .user-dot.plus { background: #3B82F6; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: bold;}
+
+        /* Background blur decoration */
+        .blur-circle {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: #60A5FA;
+            filter: blur(100px);
+            opacity: 0.15;
+            border-radius: 50%;
+            z-index: 0;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 900px) {
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 40px;
+            }
+
+            .hero-content {
+                margin: 0 auto;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            header {
+                padding: 15px 0;
+            }
+
+            nav {
+                display: none; 
+            }
+
+            .stats {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+
+            .app-window {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+            
+            .points-badge { right: 0; }
+            .rank-badge { left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <a href="https://www.spatial.io/s/shiyA231_2008s-Bespoke-Hangout-69330383ab39474d1b1ac12d?share=3720304112768816417" class="logo-link">
+                <img src="WhatsApp Image 2025-12-23 at 05.22.32 (1).jpeg" alt="EduSphere Gold Logo" class="logo-img">
+                <span class="logo-text">EduSphere</span>
+            </a>
+            
+            <nav>
+                <ul>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="btn btn-primary js-get-started">Get Started</button>
+        </header>
+
+        <main class="hero">
+            
+            <div class="hero-content">
+                <div class="badge">
+                    <span>✨</span> Next-Gen Virtual Learning
+                </div>
+                <h1>Learn Together in <br><span class="highlight-blue">3D Virtual Classrooms</span></h1>
+                <p class="hero-desc">
+                    Join immersive learning experiences with customizable avatars, interactive objects, gamification, and real-time collaboration with up to 30 students.
+                </p>
+                <div class="cta-group">
+                    <button class="btn btn-primary js-get-started">Start Learning →</button>
+                    <button class="btn btn-secondary">Watch Demo</button>
+                </div>
+                <div class="stats">
+                    <div class="stat-item">
+                        <h3>30+</h3>
+                        <p>Students per Class</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>100%</h3>
+                        <p>Interactive</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>24/7</h3>
+                        <p>Available</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="blur-circle"></div>
+                
+                <div class="float-badge points-badge">
+                    ⭐ 2,450 pts
+                </div>
+
+                <div class="app-window">
+                    <div class="window-header">
+                        <span class="pill-label">Welcome to Class!</span>
+                    </div>
+                    <div class="classroom-grid">
+                        <div class="avatar-box"></div>
+                        <div class="avatar-box"></div>
+                        <div class="avatar-box"></div>
+                        <div class="avatar-box"></div>
+                        <div class="avatar-box"></div>
+                        <div class="avatar-box"></div>
+                    </div>
+                </div>
+
+                <div class="float-badge rank-badge">
+                    <span>🏆</span> #12 Rank
+                </div>
+
+                <div class="active-users">
+                    <div class="user-dot" style="background-image: url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=50&q=80')"></div>
+                    <div class="user-dot" style="background-image: url('https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=50&q=80')"></div>
+                    <div class="user-dot" style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=50&q=80')"></div>
+                    <div class="user-dot plus">+25</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // "Get Started" buttons redirect to general spatial.io page
+        const getStartedButtons = document.querySelectorAll('.js-get-started');
+
+        getStartedButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                window.location.href = 'https://www.spatial.io/s/shiyA231_2008s-Bespoke-Hangout-69330383ab39474d1b1ac12d?share=3720304112768816417';
+            });
+        });
+    </script>
+</body>
+</html>
